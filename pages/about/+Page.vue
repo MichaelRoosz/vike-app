@@ -1,6 +1,7 @@
 <template>
   <h1>About</h1>
   <p>Example of app using Vike.</p>
+  <component is="Test1" />
 </template>
 
 <style>

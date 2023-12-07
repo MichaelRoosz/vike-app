@@ -1,4 +1,4 @@
-import { createSSRApp, defineComponent, h } from 'vue'
+import { createSSRApp, defineAsyncComponent, defineComponent, h } from 'vue'
 import PageShell from './PageShell.vue'
 import { setPageContext } from './usePageContext'
 import type { PageContext } from 'vike/types'
@@ -22,6 +22,14 @@ function createApp(Page: Component, pageProps: PageProps | undefined, pageContex
   })
 
   const app = createSSRApp(PageWithLayout)
+
+  app.component('Test1', defineAsyncComponent(() =>
+    import('./Test1.vue')
+  ));
+
+  app.component('Test2', defineAsyncComponent(() =>
+    import('./Test2.vue')
+  ));
 
   // Make pageContext available from any Vue component
   setPageContext(app, pageContext)
