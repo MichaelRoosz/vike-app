@@ -1,15 +1,29 @@
 <template>
-  <h1>Welcome</h1>
-  This page is:
-  <ul>
-    <li>Rendered to HTML.</li>
-    <li>Interactive.
-      <Counter />
-    </li>
-  </ul>
-  <component is="Test2" />
+  <component :is="getComponent('Test1')" />
 </template>
 
+
 <script lang="ts" setup>
-import Counter from './Counter.vue'
+import { defineAsyncComponent } from 'vue';
+
+const rawComponents = import.meta.glob('/renderer/**/*.vue');
+const components = new Map<string, () => Promise<{ [key: string]: unknown; }>>();
+
+for (const path in rawComponents) {
+  const name = path.split('/').reverse()[0].replace('.vue', '');
+    components.set(name, rawComponents[path]);
+}
+
+const getComponent = (name : string) => {
+  const ci =components.get(name);
+
+  if (ci !== undefined) {
+      return defineAsyncComponent(async () => {
+          return ci();
+      });
+  }
+
+  return undefined;
+};
+
 </script>

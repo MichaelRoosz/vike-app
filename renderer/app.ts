@@ -23,14 +23,6 @@ function createApp(Page: Component, pageProps: PageProps | undefined, pageContex
 
   const app = createSSRApp(PageWithLayout)
 
-  app.component('Test1', defineAsyncComponent(() =>
-    import('./Test1.vue')
-  ));
-
-  app.component('Test2', defineAsyncComponent(() =>
-    import('./Test2.vue')
-  ));
-
   // Make pageContext available from any Vue component
   setPageContext(app, pageContext)
 
